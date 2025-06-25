@@ -39,3 +39,8 @@ variable "hetzner_ssh_key_id" {
   description = "Value for existing hcloud_ssh_key.id"
   type        = string
 }
+
+variable "hetzner_network_id" {
+  description = "Value for existing hcloud_network.id"
+  type        = string
+}

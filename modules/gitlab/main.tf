@@ -67,25 +67,35 @@ resource "hcloud_server" "gitlab" {
   image       = var.hetzner_image
   server_type = var.hetzner_server_type
   location    = var.hetzner_location
+
   public_net {
     ipv4_enabled = true
     ipv4 = hcloud_primary_ip.gitlab.id
     ipv6_enabled = false
   }
+
   firewall_ids = [
     var.hetzner_ssh_firewall_id,
     hcloud_firewall.gitlab_http.id
   ]
-  keep_disk = false
+
   ssh_keys = [
     var.hetzner_ssh_key_id
   ]
+
   labels = {
     "service" : "gitlab"
   }
+
+  network {
+    network_id = var.hetzner_network_id
+  }
+
+  keep_disk = false
   delete_protection = false
   rebuild_protection = false
   shutdown_before_deletion = false
+
   user_data = templatefile("${path.module}/scripts/install_gitlab.sh", {
     EXTERNAL_URL         = var.gitlab_base_url
     GITLAB_ROOT_PASSWORD = random_password.gitlab_root.result

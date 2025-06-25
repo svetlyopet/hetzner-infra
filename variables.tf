@@ -13,6 +13,11 @@ variable "hetzner_datacenter" {
   default = "fsn1-dc14"
 }
 
+variable "hetzner_network_zone" {
+  type    = string
+  default = "eu-central"
+}
+
 variable "ssh_allowed_ip" {
   type = string
 }

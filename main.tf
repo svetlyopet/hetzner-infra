@@ -9,6 +9,11 @@ module "gitlab" {
     hetzner_image = "ubuntu-24.04"
     hetzner_server_type = "cpx31"
 
+    hetzner_network_id = hcloud_network.shared_network.id
     hetzner_ssh_firewall_id = hcloud_firewall.shared_firewall_ssh.id
     hetzner_ssh_key_id = hcloud_ssh_key.shared_ssh_key.id
+
+    depends_on = [
+        hcloud_network.shared_network
+    ]
 }
