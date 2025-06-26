@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # Install supporting packages
 sudo apt update
@@ -9,7 +9,7 @@ curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/scrip
 sudo apt install gitlab-ee
 
 # Gitlab config
-# https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/files/gitlab-config-template/gitlab.rb.template?_gl=1%2a1x2reot%2a_ga%2aMjAxODc0NTkxNi4xNjc2NzE0NzE2%2a_ga_ENFH3X7M5Y%2aMTY3NzAxMzY3OC41LjEuMTY3NzAxNDcwMS4wLjAuMA
+# https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/files/gitlab-config-template/gitlab.rb.template
 cat <<EOF > /etc/gitlab/gitlab.rb
 ${GITLAB_CONFIG}
 EOF
