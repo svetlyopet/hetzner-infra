@@ -50,7 +50,7 @@ exec_server_command() {
     server_status=$(awk -F ' ' '{print $3}' <<< $server)
 
     if [ $server_status == $want_state ]; then
-      echo -e " ${GREEN} ✓${ENDCOLOR} Server ${BOLD}${server_name}${ENDCOLOR} already $want_state (server ${server_id})"
+      echo -e " ${GREEN}✓${ENDCOLOR} Server ${BOLD}${server_name}${ENDCOLOR} already $want_state (server ${server_id})"
       continue
     fi
     

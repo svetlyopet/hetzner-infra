@@ -1,8 +1,17 @@
 #!/bin/bash
 
 # Install supporting packages
-sudo apt update
+sudo apt update && apt upgrade -y
 sudo apt install -y curl openssh-server ca-certificates tzdata perl jq
+
+# Add certificate for TLS termination on reverse-proxy
+mkdir /etc/gitlab/ssl
+cat <<EOF > /etc/gitlab/ssl/tls.crt
+${TLS_CERTIFICATE}
+EOF
+cat <<EOF > /etc/gitlab/ssl/tls.key
+${TLS_CERTIFICATE_KEY}
+EOF
 
 # Install GitLab Omnibus
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
@@ -23,26 +32,28 @@ curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/sc
 sudo apt install -y gitlab-runner
 
 # Register GitLab Runner
-AUTHORIZATION_TOKEN=$(curl --request POST --header "Content-Type: application/json" --data "{ \
+ACCESS_TOKEN=$(curl -k --request POST --header "Content-Type: application/json" --data "{ \
     \"grant_type\": \"password\", \
     \"username\": \"root\", \
     \"password\": \"$GITLAB_ROOT_PASSWORD\" \
-  }" http://127.0.0.1/oauth/token)
+  }" "${EXTERNAL_URL}/oauth/token" | jq .access_token | tr -d '"')
 
-RUNNER_TOKEN=$(curl -k -H "Authorization: Bearer $AUTHORIZATION_TOKEN" -X POST 'http://127.0.0.1/api/v4/user/runners?runner_type=instance_type' | jq .token)
+RUNNER_TOKEN=$(curl -k --silent --request POST --url "${EXTERNAL_URL}/api/v4/user/runners" \
+  --data "runner_type=instance_type" \
+  --data "run_untagged=true" \
+  --data "paused=false" \
+  --data "description=docker-runner" \
+  --data "tag_list=shell,linux,xenial,ubuntu,docker" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" | jq .token | tr -d '"')
 
 sudo sed -i 's/concurrent.*/concurrent = 10/' /etc/gitlab-runner/config.toml
 sudo gitlab-runner register --url "${EXTERNAL_URL}" \
     --token "$RUNNER_TOKEN" \
     --non-interactive \
     --executor docker \
-    --description "docker-runner" \
-    --tag-list "shell,linux,xenial,ubuntu,docker" \
-    --run-untagged \
-    --locked="false" \
     --docker-image "alpine:latest"
 
-# Install Docker 
+# Install Docker
 sudo apt-get install ca-certificates curl gnupg lsb-release
     
 sudo mkdir -m 0755 -p /etc/apt/keyrings
