@@ -1,10 +1,5 @@
-variable "gitlab_base_url" {
-  description = "Base URL of the Gitlab instance"
-  type        = string
-}
-
-variable "gitlab_registry_url" {
-  description = "Base URL of the Gitlab registry"
+variable "vault_fqdn" {
+  description = "FQDN of the Vault instance"
   type        = string
 }
 

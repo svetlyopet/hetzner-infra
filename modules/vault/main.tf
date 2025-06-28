@@ -1,28 +1,23 @@
-resource "hcloud_primary_ip" "gitlab" {
-  name          = "ip-gitlab"
+resource "hcloud_primary_ip" "vault" {
+  name          = "ip-vault"
   datacenter    = var.hetzner_datacenter
   type          = "ipv4"
   assignee_type = "server"
   auto_delete   = true
   labels = {
-    "service" : "gitlab"
+    "service" : "vault"
   }
 }
 
-resource "random_password" "gitlab_root" {
-  length  = 40
-  special = false
-}
-
-resource "hcloud_server" "gitlab" {
-  name        = "vm-gitlab"
+resource "hcloud_server" "vault" {
+  name        = "vm-vault"
   image       = var.hetzner_image
   server_type = var.hetzner_server_type
   location    = var.hetzner_location
 
   public_net {
     ipv4_enabled = true
-    ipv4 = hcloud_primary_ip.gitlab.id
+    ipv4 = hcloud_primary_ip.vault.id
     ipv6_enabled = false
   }
 
@@ -36,7 +31,7 @@ resource "hcloud_server" "gitlab" {
   ]
 
   labels = {
-    "service" : "gitlab"
+    "service" : "vault"
   }
 
   network {
@@ -48,19 +43,19 @@ resource "hcloud_server" "gitlab" {
   rebuild_protection = false
   shutdown_before_deletion = false
 
-  user_data = templatefile("${path.module}/scripts/install_gitlab.sh", {
+  user_data = templatefile("${path.module}/scripts/install_vault.sh", {
     TLS_CERTIFICATE      = templatefile("${path.module}/templates/tls.crt.template", {})
     TLS_CERTIFICATE_KEY  = templatefile("${path.module}/templates/tls.key.template", {})
-    EXTERNAL_URL         = var.gitlab_base_url
-    GITLAB_ROOT_PASSWORD = random_password.gitlab_root.result
-    GITLAB_CONFIG = templatefile("${path.module}/templates/gitlab.rb.template", {
-      EXTERNAL_URL          = "${var.gitlab_base_url}"
-      REGISTRY_EXTERNAL_URL = "${var.gitlab_registry_url}"
-      GITLAB_ROOT_PASSWORD  = random_password.gitlab_root.result
+    VAULT_CONFIG          = templatefile("${path.module}/templates/vault.hcl.template", {
+      VAULT_INSTALL_DIR = "/opt/vault"
+    })
+    VAULT_SYSTEMD_SERVICE = templatefile("${path.module}/templates/vault.service.template", {})
+    NGINX_CONFIG          = templatefile("${path.module}/templates/nginx.conf.template", {
+      EXTERNAL_FQDN     = "${var.vault_fqdn}"
     })
   })
 
   depends_on = [
-    hcloud_primary_ip.gitlab
+    hcloud_primary_ip.vault
   ]
 }

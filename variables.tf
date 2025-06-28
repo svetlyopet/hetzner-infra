@@ -22,10 +22,14 @@ variable "ssh_allowed_ip" {
   type = string
 }
 
-variable "gitlab_base_url" {
+variable "gitlab_base_fqdn" {
   type = string
 }
 
-variable "gitlab_registry_url" {
+variable "gitlab_registry_fqdn" {
+  type = string
+}
+
+variable "vault_fqdn" {
   type = string
 }

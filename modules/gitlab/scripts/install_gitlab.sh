@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Install supporting packages
-sudo apt update && apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl openssh-server ca-certificates tzdata perl jq
 
 # Add certificate for TLS termination on reverse-proxy
-mkdir /etc/gitlab/ssl
-cat <<EOF > /etc/gitlab/ssl/tls.crt
+mkdir -p /etc/ssl/nginx
+cat <<EOF > /etc/ssl/nginx/tls.crt
 ${TLS_CERTIFICATE}
 EOF
-cat <<EOF > /etc/gitlab/ssl/tls.key
+cat <<EOF > /etc/ssl/nginx/tls.key
 ${TLS_CERTIFICATE_KEY}
 EOF
 
