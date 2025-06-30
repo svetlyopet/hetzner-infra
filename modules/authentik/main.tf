@@ -51,6 +51,9 @@ resource "hcloud_server" "authentik" {
 
   network {
     network_id = var.shared_network_id
+    # Add alias_ips to suppress diff causing terraform to modify the server without any changes
+    # https://github.com/hetznercloud/terraform-provider-hcloud/issues/650#issuecomment-1497160625
+    alias_ips = []
   }
 
   keep_disk = false
