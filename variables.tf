@@ -30,6 +30,10 @@ variable "gitlab_registry_fqdn" {
   type = string
 }
 
+variable "authentik_fqdn" {
+  type = string
+}
+
 variable "vault_fqdn" {
   type = string
 }

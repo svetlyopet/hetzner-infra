@@ -61,6 +61,7 @@ resource "hcloud_server" "gitlab" {
   })
 
   depends_on = [
-    hcloud_primary_ip.gitlab
+    hcloud_primary_ip.gitlab,
+    random_password.gitlab_root
   ]
 }

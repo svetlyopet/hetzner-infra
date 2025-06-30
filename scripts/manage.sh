@@ -15,7 +15,7 @@ GREEN="\033[32m"
 ENDCOLOR="\033[0m"
 
 # Keep track of the resources we create in this array
-SERVERS=("vm-gitlab" "vm-vault")
+SERVERS=("vm-gitlab" "vm-vault" "vm-authentik")
 
 HCLOUD_BIN=$(which hcloud)
 
