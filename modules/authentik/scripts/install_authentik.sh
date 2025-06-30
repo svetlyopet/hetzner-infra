@@ -18,9 +18,11 @@ AUTHENTIK_DIR=/opt/authentik
 mkdir -m 0755 -p $AUTHENTIK_DIR
 curl -fsSL https://goauthentik.io/docker-compose.yml -o $AUTHENTIK_DIR/docker-compose.yml
 
-echo "AUTHENTIK_SECRET_KEY=$AUTHENTIK_SECRET_KEY" >> $AUTHENTIK_DIR/.env
-echo "AUTHENTIK_BOOTSTRAP_PASSWORD=$AUTHENTIK_BOOTSTRAP_PASSWORD" >> $AUTHENTIK_DIR/.env
-echo "PG_PASS=$PG_PASS" >> $AUTHENTIK_DIR/.env
+cat <<EOF > $AUTHENTIK_DIR/.env 
+AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
+AUTHENTIK_BOOTSTRAP_PASSWORD=${AUTHENTIK_BOOTSTRAP_PASSWORD}
+PG_PASS=${PG_PASS}
+EOF
 
 # Start the Authentik and all its supporting services
 sudo docker compose -f $AUTHENTIK_DIR/docker-compose.yml pull
@@ -46,4 +48,4 @@ ${NGINX_CONFIG}
 EOF
 
 # Start the NGINX server
-sudo systemctl start nginx
+sudo systemctl restart nginx
