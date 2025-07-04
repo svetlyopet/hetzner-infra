@@ -6,7 +6,7 @@ data "cloudflare_zone" "zone_data" {
 
 resource "cloudflare_dns_record" "auth" {
     zone_id = data.cloudflare_zone.zone_data.zone_id
-    name = var.subdomain_authentik
+    name = local.authentik_fqdn
     type = "A"
     content = module.authentik.authentik_primary_ip
     proxied = local.cloudflare_dns_proxied
@@ -19,7 +19,7 @@ resource "cloudflare_dns_record" "auth" {
 
 resource "cloudflare_dns_record" "vault" {
     zone_id = data.cloudflare_zone.zone_data.zone_id
-    name = var.subdomain_vault
+    name = local.vault_fqdn
     type = "A"
     content = module.vault.vault_primary_ip
     proxied = local.cloudflare_dns_proxied
@@ -32,7 +32,7 @@ resource "cloudflare_dns_record" "vault" {
 
 resource "cloudflare_dns_record" "gitlab" {
     zone_id = data.cloudflare_zone.zone_data.zone_id
-    name = var.subdomain_gitlab
+    name = local.gitlab_fqdn
     type = "A"
     content = module.gitlab.gitlab_primary_ip
     proxied = local.cloudflare_dns_proxied
@@ -45,7 +45,7 @@ resource "cloudflare_dns_record" "gitlab" {
 
 resource "cloudflare_dns_record" "gitlab_registry" {
     zone_id = data.cloudflare_zone.zone_data.zone_id
-    name = var.subdomain_gitlab_registry
+    name = local.gitlab_registry_fqdn
     type = "A"
     content = module.gitlab.gitlab_primary_ip
     proxied = local.cloudflare_dns_proxied
