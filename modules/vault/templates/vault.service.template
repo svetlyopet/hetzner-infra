@@ -2,7 +2,7 @@
 Documentation="https://developer.hashicorp.com/vault/docs"
 Description=Hashicorp Vault Service
 After=network-online.target
-Want=network-online.target
+Wants=network-online.target
 ConditionFileNotEmpty=/etc/vault.d/vault.hcl
 
 [Service]

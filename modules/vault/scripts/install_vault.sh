@@ -25,6 +25,14 @@ cat <<EOF > /etc/systemd/system/vault.service
 ${VAULT_SYSTEMD_SERVICE}
 EOF
 
+# Enable vault service on system startup
+sudo systemctl enable vault.service
+sudo systemctl start vault.service
+
+VAULT_BIN=$(which vault)
+
+$VAULT_BIN operator init -key-shares=$VAULT_KEY_SHARES -key-threshold=$VAULT_KEY_THRESHOLD -tls-skip-verify > /etc/vault.d/initial_setup
+
 # Install NGINX
 sudo apt install -y nginx
 
@@ -43,3 +51,6 @@ sudo rm -f /etc/nginx/sites-available/default
 cat <<EOF > /etc/nginx/conf.d/nginx.conf
 ${NGINX_CONFIG}
 EOF
+
+# Start the NGINX server
+sudo systemctl restart nginx
