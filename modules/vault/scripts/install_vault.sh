@@ -29,10 +29,6 @@ EOF
 sudo systemctl enable vault.service
 sudo systemctl start vault.service
 
-VAULT_BIN=$(which vault)
-
-$VAULT_BIN operator init -key-shares=$VAULT_KEY_SHARES -key-threshold=$VAULT_KEY_THRESHOLD -tls-skip-verify > /etc/vault.d/initial_setup
-
 # Install NGINX
 sudo apt install -y nginx
 
