@@ -59,6 +59,7 @@ resource "hcloud_server" "gitlab" {
     GITLAB_CONFIG = templatefile("${path.module}/templates/gitlab.rb.template", {
       EXTERNAL_URL          = "${var.gitlab_base_url}"
       REGISTRY_EXTERNAL_URL = "${var.gitlab_registry_url}"
+      IP_ADDRS              = var.http_allowed_ips
       GITLAB_ROOT_PASSWORD  = random_password.gitlab_root.result
     })
   })

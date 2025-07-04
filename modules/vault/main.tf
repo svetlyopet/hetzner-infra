@@ -49,13 +49,14 @@ resource "hcloud_server" "vault" {
   user_data = templatefile("${path.module}/scripts/install_vault.sh", {
     TLS_CERTIFICATE      = templatefile("${path.module}/templates/tls.crt.template", {})
     TLS_CERTIFICATE_KEY  = templatefile("${path.module}/templates/tls.key.template", {})
+    NGINX_CONFIG         = templatefile("${path.module}/templates/nginx.conf.template", {
+      EXTERNAL_FQDN = "${var.vault_fqdn}"
+      IP_ADDRS      = var.http_allowed_ips
+    })
     VAULT_CONFIG          = templatefile("${path.module}/templates/vault.hcl.template", {
       VAULT_INSTALL_DIR = "/opt/vault"
     })
     VAULT_SYSTEMD_SERVICE = templatefile("${path.module}/templates/vault.service.template", {})
-    NGINX_CONFIG          = templatefile("${path.module}/templates/nginx.conf.template", {
-      EXTERNAL_FQDN     = "${var.vault_fqdn}"
-    })
   })
 
   depends_on = [

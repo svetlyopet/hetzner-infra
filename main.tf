@@ -14,6 +14,8 @@ module "gitlab" {
     shared_firewall_http_id = hcloud_firewall.shared_firewall_http.id
     shared_ssh_key_id       = hcloud_ssh_key.shared_ssh_key.id
 
+    http_allowed_ips = local.http_allowed_ips
+
     depends_on = [
         hcloud_network.shared_network,
         hcloud_firewall.shared_firewall_ssh,
@@ -37,6 +39,8 @@ module "authentik" {
     shared_firewall_http_id = hcloud_firewall.shared_firewall_http.id
     shared_ssh_key_id       = hcloud_ssh_key.shared_ssh_key.id
 
+    http_allowed_ips = local.http_allowed_ips
+
     depends_on = [
         hcloud_network.shared_network,
         hcloud_firewall.shared_firewall_ssh,
@@ -59,6 +63,8 @@ module "vault" {
     shared_firewall_ssh_id  = hcloud_firewall.shared_firewall_ssh.id
     shared_firewall_http_id = hcloud_firewall.shared_firewall_http.id
     shared_ssh_key_id       = hcloud_ssh_key.shared_ssh_key.id
+
+    http_allowed_ips = local.http_allowed_ips
 
     depends_on = [
         hcloud_network.shared_network,

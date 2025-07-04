@@ -44,3 +44,8 @@ variable "shared_network_id" {
   description = "Value for existing hcloud_network.id"
   type        = string
 }
+
+variable "http_allowed_ips" {
+  description = "List of allowed IP and networks for HTTP(S) traffic"
+  type        = list
+}

@@ -18,8 +18,8 @@ variable "hetzner_network_zone" {
   default = "eu-central"
 }
 
-variable "ssh_allowed_ip" {
-  type = string
+variable "ssh_allowed_ips" {
+  type = list
 }
 
 variable "gitlab_base_fqdn" {

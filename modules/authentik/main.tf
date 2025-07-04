@@ -11,12 +11,12 @@ resource "hcloud_primary_ip" "authentik" {
 
 resource "random_password" "authentik_secret_key" {
   length  = 60
-  special = false
+  special = true
 }
 
 resource "random_password" "authentik_akadmin" {
   length  = 60
-  special = false
+  special = true
 }
 
 resource "random_password" "postgres_password" {
@@ -66,6 +66,7 @@ resource "hcloud_server" "authentik" {
     TLS_CERTIFICATE_KEY = templatefile("${path.module}/templates/tls.key.template", {})
     NGINX_CONFIG        = templatefile("${path.module}/templates/nginx.conf.template", {
       EXTERNAL_FQDN = "${var.authentik_fqdn}"
+      IP_ADDRS      = var.http_allowed_ips
     })
     AUTHENTIK_SECRET_KEY         = random_password.authentik_secret_key.result
     AUTHENTIK_BOOTSTRAP_PASSWORD = random_password.authentik_akadmin.result
