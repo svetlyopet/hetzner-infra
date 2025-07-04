@@ -1,8 +1,8 @@
 module "gitlab" {
     source = "./modules/gitlab"
 
-    gitlab_base_url     = "https://${var.gitlab_base_fqdn}"
-    gitlab_registry_url = "https://${var.gitlab_registry_fqdn}"
+    gitlab_base_url     = "https://${local.gitlab_fqdn}"
+    gitlab_registry_url = "https://${local.gitlab_registry_fqdn}"
 
     hetzner_location    = var.hetzner_location
     hetzner_datacenter  = var.hetzner_datacenter
@@ -27,7 +27,7 @@ module "gitlab" {
 module "authentik" {
     source = "./modules/authentik"
 
-    authentik_fqdn = var.authentik_fqdn
+    authentik_fqdn = local.authentik_fqdn
 
     hetzner_location    = var.hetzner_location
     hetzner_datacenter  = var.hetzner_datacenter
@@ -52,7 +52,7 @@ module "authentik" {
 module "vault" {
     source = "./modules/vault"
 
-    vault_fqdn = var.vault_fqdn
+    vault_fqdn = local.vault_fqdn
 
     hetzner_location    = var.hetzner_location
     hetzner_datacenter  = var.hetzner_datacenter

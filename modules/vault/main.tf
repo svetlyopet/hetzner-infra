@@ -57,8 +57,6 @@ resource "hcloud_server" "vault" {
       VAULT_INSTALL_DIR = "/opt/vault"
     })
     VAULT_SYSTEMD_SERVICE = templatefile("${path.module}/templates/vault.service.template", {})
-    VAULT_KEY_SHARES      = local.vault_key_shares
-    VAULT_KEY_THRESHOLD   = local.vault_key_threshold
   })
 
   depends_on = [

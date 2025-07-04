@@ -3,6 +3,11 @@ variable "hcloud_token" {
   sensitive = true
 }
 
+variable "cloudflare_api_token" {
+  type      = string
+  sensitive = true
+}
+
 variable "hetzner_location" {
   type    = string
   default = "fsn1"
@@ -22,18 +27,26 @@ variable "ssh_allowed_ips" {
   type = list
 }
 
-variable "gitlab_base_fqdn" {
+variable "base_domain" {
   type = string
 }
 
-variable "gitlab_registry_fqdn" {
-  type = string
+variable "subdomain_gitlab" {
+  type    = string
+  default = "gitlab"
 }
 
-variable "authentik_fqdn" {
-  type = string
+variable "subdomain_gitlab_registry" {
+  type    = string
+  default = "registry"
 }
 
-variable "vault_fqdn" {
-  type = string
+variable "subdomain_authentik" {
+  type    = string
+  default = "auth"
+}
+
+variable "subdomain_vault" {
+  type    = string
+  default = "vault"
 }
