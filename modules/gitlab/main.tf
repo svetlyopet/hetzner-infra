@@ -10,7 +10,7 @@ resource "hcloud_primary_ip" "gitlab" {
 }
 
 resource "random_password" "gitlab_root" {
-  length  = 40
+  length  = 50
   special = false
 }
 

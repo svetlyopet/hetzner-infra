@@ -10,13 +10,13 @@ resource "hcloud_primary_ip" "authentik" {
 }
 
 resource "random_password" "authentik_secret_key" {
-  length  = 60
-  special = true
+  length  = 50
+  special = false
 }
 
 resource "random_password" "authentik_akadmin" {
-  length  = 60
-  special = true
+  length  = 50
+  special = false
 }
 
 resource "random_password" "postgres_password" {
