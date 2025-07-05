@@ -7,7 +7,10 @@ module "gitlab" {
     hetzner_location    = var.hetzner_location
     hetzner_datacenter  = var.hetzner_datacenter
     hetzner_image       = "ubuntu-24.04"
-    hetzner_server_type = "cpx31"
+    hetzner_server_type = "cpx21"
+
+    swap_enabled = true
+    swap_size    = "2G"
 
     shared_network_id       = hcloud_network.shared_network.id
     shared_firewall_ssh_id  = hcloud_firewall.shared_firewall_ssh.id

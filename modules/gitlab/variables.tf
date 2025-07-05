@@ -54,3 +54,20 @@ variable "http_allowed_ips" {
   description = "List of allowed IP and networks for HTTP(S) traffic"
   type        = list
 }
+
+variable "swap_enabled" {
+  description = "Enable swap"
+  type        = bool
+  default     = false
+}
+
+variable "swap_size" {
+  description = "Swap size when swap is enabled"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^$|[1-9][0-9]{0,3}(G|M)$", var.swap_size))
+    error_message = "Invalid swap size. Examples: 512M, 1G"
+  }
+}

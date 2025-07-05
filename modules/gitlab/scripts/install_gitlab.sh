@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Enable swap if requested
+if [ "${SWAP_ENABLED}" == "true" ]; then
+  sudo mkdir -p /var/lib/swap
+  sudo fallocate -l ${SWAP_SIZE} /var/lib/swap/swapfile
+  sudo chmod 600 /var/lib/swap/swapfile
+  sudo mkswap /var/lib/swap/swapfile
+  sudo swapon /var/lib/swap/swapfile
+  echo "# mount swap file on boot" >> /etc/fstab
+  echo "/var/lib/swap/swapfile swap swap defaults 0 0" >> /etc/fstab
+  echo "vm.swappiness=10" > /etc/sysctl.d/99-swappiness.conf
+  sudo sysctl -p
+fi
+
 # Install supporting packages
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl openssh-server ca-certificates tzdata perl jq
