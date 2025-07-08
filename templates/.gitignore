@@ -1,0 +1,3 @@
+# Ignore sensitive templates for SSL certificates
+tls.crt.tpl
+tls.key.tpl
