@@ -37,5 +37,5 @@ override.tf.json
 terraform.rc
 
 # Ignore sensitive templates
-tls.crt.template
-tls.key.template
+tls.crt.tpl
+tls.key.tpl

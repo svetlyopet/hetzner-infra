@@ -54,6 +54,21 @@ brew install hashicorp/tap/terraform
 brew install hcloud
 ```
 
+Second, you need to have a Cloudflare account and a domain. You can sign up for free [here](https://www.cloudflare.com/en-gb/)
+and add your domain to your account. After this is done, generate an API token for your account with EDIT permissions for your DNS zone.
+
+Third step is to generate [Origin certificates](https://developers.cloudflare.com/ssl/origin-configuration/) wildcard certificate for your domain from Cloudflare. The certificate is used for the TLS termination done on the reverse proxies in front of the services. Generate the certificate and private key and place their contents in the global [templates directory](./templates) with names `tls.crt.tpl` for the public key, and `tls.key.tpl` for the private key.
+
+Fourth and final step is to create a .tfvars file for your project and add set following variables in it:
+```sh
+cat <<EOF > example.tfvars
+hcloud_token         = "your-hetzner-token"
+cloudflare_api_token = "your-cloudflare-token"
+ssh_allowed_ips      = ["127.0.0.1/32"]
+base_domain          = "example.com"
+EOF
+```
+
 ## High Availability
 
 Since the target for this bootstrap setup is small and low-cost development environments, HA is not supported for the installed services.

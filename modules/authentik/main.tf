@@ -62,9 +62,9 @@ resource "hcloud_server" "authentik" {
   shutdown_before_deletion = false
 
   user_data = templatefile("${path.module}/scripts/install_authentik.sh", {
-    TLS_CERTIFICATE     = templatefile("${path.module}/templates/tls.crt.template", {})
-    TLS_CERTIFICATE_KEY = templatefile("${path.module}/templates/tls.key.template", {})
-    NGINX_CONFIG        = templatefile("${path.module}/templates/nginx.conf.template", {
+    TLS_CERTIFICATE     = templatefile("${path.root}/templates/tls.crt.tpl", {})
+    TLS_CERTIFICATE_KEY = templatefile("${path.root}/templates/tls.key.tpl", {})
+    NGINX_CONFIG        = templatefile("${path.module}/templates/nginx.conf.tpl", {
       EXTERNAL_FQDN = "${var.authentik_fqdn}"
       IP_ADDRS      = var.http_allowed_ips
     })

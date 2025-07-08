@@ -54,11 +54,11 @@ resource "hcloud_server" "gitlab" {
   user_data = templatefile("${path.module}/scripts/install_gitlab.sh", {
     SWAP_ENABLED         = var.swap_enabled ? "true" : "false"
     SWAP_SIZE            = var.swap_size
-    TLS_CERTIFICATE      = templatefile("${path.module}/templates/tls.crt.template", {})
-    TLS_CERTIFICATE_KEY  = templatefile("${path.module}/templates/tls.key.template", {})
+    TLS_CERTIFICATE      = templatefile("${path.root}/templates/tls.crt.tpl", {})
+    TLS_CERTIFICATE_KEY  = templatefile("${path.root}/templates/tls.key.tpl", {})
     EXTERNAL_URL         = var.gitlab_base_url
     GITLAB_ROOT_PASSWORD = random_password.gitlab_root.result
-    GITLAB_CONFIG = templatefile("${path.module}/templates/gitlab.rb.template", {
+    GITLAB_CONFIG = templatefile("${path.module}/templates/gitlab.rb.tpl", {
       EXTERNAL_URL          = var.gitlab_base_url
       REGISTRY_EXTERNAL_URL = var.gitlab_registry_url
       IP_ADDRS              = var.http_allowed_ips

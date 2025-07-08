@@ -47,16 +47,16 @@ resource "hcloud_server" "vault" {
   shutdown_before_deletion = false
 
   user_data = templatefile("${path.module}/scripts/install_vault.sh", {
-    TLS_CERTIFICATE      = templatefile("${path.module}/templates/tls.crt.template", {})
-    TLS_CERTIFICATE_KEY  = templatefile("${path.module}/templates/tls.key.template", {})
-    NGINX_CONFIG         = templatefile("${path.module}/templates/nginx.conf.template", {
+    TLS_CERTIFICATE      = templatefile("${path.root}/templates/tls.crt.tpl", {})
+    TLS_CERTIFICATE_KEY  = templatefile("${path.root}/templates/tls.key.tpl", {})
+    NGINX_CONFIG         = templatefile("${path.module}/templates/nginx.conf.tpl", {
       EXTERNAL_FQDN = "${var.vault_fqdn}"
       IP_ADDRS      = var.http_allowed_ips
     })
-    VAULT_CONFIG          = templatefile("${path.module}/templates/vault.hcl.template", {
+    VAULT_CONFIG          = templatefile("${path.module}/templates/vault.hcl.tpl", {
       VAULT_INSTALL_DIR = "/opt/vault"
     })
-    VAULT_SYSTEMD_SERVICE = templatefile("${path.module}/templates/vault.service.template", {})
+    VAULT_SYSTEMD_SERVICE = templatefile("${path.module}/templates/vault.service.tpl", {})
   })
 
   depends_on = [
