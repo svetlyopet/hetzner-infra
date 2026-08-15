@@ -37,6 +37,7 @@ get_hcloud_token() {
   if [ -z $HCLOUD_TOKEN ]; then
     read -p "Enter hcloud token: " HCLOUD_TOKEN
   fi
+  export HCLOUD_TOKEN
 }
 
 get_servers_list() {
